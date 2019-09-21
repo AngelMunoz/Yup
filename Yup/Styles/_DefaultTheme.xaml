@@ -1,0 +1,16 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Yup.Styles">
+    <ResourceDictionary.MergedDictionaries>
+        <ColorPaletteResources Accent="#FF009688" AltHigh="#FF000000" AltLow="#FF000000" AltMedium="#FF000000" AltMediumHigh="#FF000000" AltMediumLow="#FF000000" BaseHigh="#FFFFFFFF" BaseLow="#FF6B7C8A" BaseMedium="#FFADC0CE" BaseMediumHigh="#FFBDD1DF" BaseMediumLow="#FF8C9EAC" ChromeAltLow="#FFBDD1DF" ChromeBlackHigh="#FF000000" ChromeBlackLow="#FFBDD1DF" ChromeBlackMedium="#FF000000" ChromeBlackMediumLow="#FF000000" ChromeDisabledHigh="#FF6B7C8A" ChromeDisabledLow="#FFADC0CE" ChromeGray="#FF9CAFBD" ChromeHigh="#FF9CAFBD" ChromeLow="#FF153D59" ChromeMedium="#FF2B4D65" ChromeMediumLow="#FF566C7E" ChromeWhite="#FFFFFFFF" ListLow="#FF2B4D65" ListMedium="#FF6B7C8A" />
+        <ResourceDictionary>
+            <Color x:Key="SystemChromeAltMediumHighColor">#CC362F23</Color>
+            <Color x:Key="SystemChromeAltHighColor">#FF362F23</Color>
+            <Color x:Key="SystemRevealListLowColor">#FF2B4D65</Color>
+            <Color x:Key="SystemRevealListMediumColor">#FF6B7C8A</Color>
+            <Color x:Key="RegionColor">#FF362F23</Color>
+            <SolidColorBrush x:Key="RegionBrush" Color="{StaticResource RegionColor}" />
+        </ResourceDictionary>
+    </ResourceDictionary.MergedDictionaries>
+</ResourceDictionary>

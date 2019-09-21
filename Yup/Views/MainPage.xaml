@@ -1,0 +1,145 @@
+﻿<Page
+    x:Class="Yup.Views.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:converters="using:Microsoft.Toolkit.Uwp.UI.Converters"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:helpers="using:Yup.Helpers"
+    xmlns:models="using:Yup.Core.Models"
+    xmlns:cal="using:Caliburn.Micro"
+    Style="{StaticResource PageStyle}"
+    mc:Ignorable="d">
+  <Page.Resources>
+    <helpers:NullToVisibilityConverter x:Name="NullToVisibilityConverter" />
+    <converters:BoolToVisibilityConverter x:Name="BoolToVisibilityConverter" TrueValue="Visible" FalseValue="Collapsed" />
+    <converters:BoolToVisibilityConverter x:Name="NegativeBoolToVisibilityConverter" TrueValue="Collapsed" FalseValue="Visible" />
+  </Page.Resources>
+  <Grid Style="{StaticResource PageContent}">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="*" />
+      <RowDefinition MaxHeight="50" />
+    </Grid.RowDefinitions>
+    <ScrollViewer
+      Grid.Row="0"
+      HorizontalAlignment="Stretch"
+      HorizontalScrollBarVisibility="Auto"
+      VerticalAlignment="Stretch"
+      VerticalScrollBarVisibility="Auto"
+      Style="{StaticResource ScrollWrapper}"
+      >
+      <StackPanel>
+        <StackPanel
+          Padding="24"
+          MaxWidth="450"
+          Background="{ThemeResource SystemControlAcrylicElementBrush}"
+          Visibility="{x:Bind ViewModel.ShowAddForm, Converter={StaticResource BoolToVisibilityConverter }, Mode=OneWay}">
+          <TextBlock
+            Margin="4"
+            x:Uid="MainPage_AddNameLbl" />
+          <TextBox
+            x:Uid="MainPage_AddNamePlaceholder"
+            x:Name="SelectedKey"
+            Margin="4"
+            Text="{x:Bind ViewModel.SelectedItem.KeyName, Mode=TwoWay}" />
+          <TextBlock
+            Margin="4"
+            x:Uid="MainPage_AddMongoPartialLbl"
+            />
+          <TextBox
+            Margin="4"
+            x:Uid="MainPage_AddMongoPartialPlaceholder"
+            x:Name="SelectedMongoUrl"
+            Text="{x:Bind ViewModel.SelectedItem.MongoUrl, Mode=TwoWay}" />
+          <AppBarButton
+            Margin="8"
+            x:Uid="MainPage_FromPaperclip"
+            Icon="Attach"
+            cal:Message.Attach="[Event Click] = [Action OnPaperClip()]" />
+        </StackPanel>
+        <ProgressBar
+          VerticalAlignment="Stretch"
+          HorizontalAlignment="Stretch"
+          VerticalContentAlignment="Center"
+          IsIndeterminate="{x:Bind ViewModel.IsLoading}"
+          Visibility="{x:Bind ViewModel.IsLoading, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}" />
+        <GridView
+            x:Name="ConnectionList"
+            cal:Message.Attach="[Event ItemClick] = [Action OnSelectedItem($eventArgs)]"
+            ItemsSource="{x:Bind ViewModel.PrevConnections}"
+            IsItemClickEnabled="True"
+            SelectionMode="Single"
+            Visibility="{x:Bind ViewModel.IsLoading, Converter={StaticResource NegativeBoolToVisibilityConverter}, Mode=OneWay}"
+          >
+          <GridView.KeyboardAccelerators>
+            <KeyboardAccelerator x:Name="Navigate" Modifiers="Control" Key="Enter" Invoked="Navigate_Invoked" />
+          </GridView.KeyboardAccelerators>
+          <GridView.ItemTemplate>
+            <DataTemplate x:Name="TwoLineDataTemplate" x:DataType="models:PreviousConnection">
+              <StackPanel
+                Width="150"
+                Height="150"
+                cal:Message.Attach="[Event DoubleTapped] = [Action OnConnect()]">
+                <TextBlock
+                  Margin="12"
+                  VerticalAlignment="Center"
+                  HorizontalAlignment="Center"
+                  Text="{x:Bind KeyName}"/>
+                <TextBlock
+                    x:Uid="MainPageLastUsedTrue"
+                    Margin="12"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    TextTrimming="CharacterEllipsis"
+                    Visibility="{x:Bind IsActive, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}"
+                  />
+                <TextBlock
+                    x:Uid="MainPageLastUsedFalse"
+                    Margin="12"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    TextTrimming="CharacterEllipsis"
+                    Visibility="{x:Bind IsActive, Converter={StaticResource NegativeBoolToVisibilityConverter}, Mode=OneWay}"
+                  />
+              </StackPanel>
+            </DataTemplate>
+          </GridView.ItemTemplate>
+          <GridView.ItemsPanel>
+            <ItemsPanelTemplate>
+              <ItemsWrapGrid MaximumRowsOrColumns="6" Orientation="Horizontal" />
+            </ItemsPanelTemplate>
+          </GridView.ItemsPanel>
+        </GridView>
+      </StackPanel>
+    </ScrollViewer>
+    <CommandBar Grid.Row="1" IsSticky="True" ClosedDisplayMode="Compact" >
+      <CommandBar.PrimaryCommands>
+        <AppBarButton
+          Icon="Link"
+          cal:Message.Attach="[Event Click] = [Action OnConnect()]"
+          Visibility="{x:Bind ViewModel.SelectedItem, Converter={StaticResource NullToVisibilityConverter }, Mode=OneWay}" />
+        <AppBarButton
+          x:Uid="MainPage_SaveBtn"
+          Icon="Save"
+          cal:Message.Attach="[Event Click] = [Action OnSaveCurrent(SelectedKey, SelectedMongoUrl)]"
+          Visibility="{x:Bind ViewModel.ShowAddForm, Converter={StaticResource BoolToVisibilityConverter }, Mode=OneWay}" />
+        <AppBarButton
+          x:Uid="Mainpage_AddLabel"
+          cal:Message.Attach="[Event Click] = [Action OnAdd()]"
+          Visibility="{x:Bind ViewModel.ShowAddForm, Converter={StaticResource NegativeBoolToVisibilityConverter}, Mode=OneWay}"
+          Icon="Add" />
+        <AppBarButton
+          x:Uid="MainPage_DeleteLabel"
+          cal:Message.Attach="[Event Click] = [Action OnDelete()]"
+          Icon="Delete"
+          Visibility="{x:Bind ViewModel.SelectedItem, Converter={StaticResource NullToVisibilityConverter }, Mode=OneWay}"/>
+        <AppBarButton
+          x:Uid="MainPage_CancelBtn"
+          Icon="Cancel"
+          cal:Message.Attach="[Event Click] = [Action OnCancel()]"
+          Visibility="{x:Bind ViewModel.ShowAddForm, Converter={StaticResource BoolToVisibilityConverter }, Mode=OneWay}" />
+      </CommandBar.PrimaryCommands>
+    </CommandBar>
+  </Grid>
+</Page>

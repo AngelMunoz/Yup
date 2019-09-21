@@ -1,0 +1,30 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Code Editor</title>
+  <style>
+    :root {
+      --bg-color: #1e1e1e;
+    }
+
+    html, body {
+      height: 100%;
+      padding: 0;
+      margin: 0;
+      background-color: var(--bg-color);
+    }
+    #container {
+      height: 100%;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <main id="container" style="height:100%;"></main>
+  <script src="/Html/monaco/dev/vs/loader.js"></script>
+  <script type="module" src="index.js"></script>
+</body>
+</html>
